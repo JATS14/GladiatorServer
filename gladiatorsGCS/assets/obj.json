@@ -1,0 +1,14 @@
+{
+
+
+	"Number": 1,
+	"String": "holamundo",
+	"Object": {
+		"Object number": 0,
+		"Object String": "holamundo2"
+	},
+	"Array": [
+		"hola mundo xd",
+		300
+	]
+}
