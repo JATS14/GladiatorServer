@@ -11,6 +11,7 @@ public class Gladiador {
 	    int fuerzaSuperior;
 	    int fuerzaInferior;
 	    int x,y;
+	    int fitness = 0;
 	    
 	    public Gladiador(String name, int edad, int probSupervivencia,
 	    				int generaciones, int inteligenciaEmocional, 

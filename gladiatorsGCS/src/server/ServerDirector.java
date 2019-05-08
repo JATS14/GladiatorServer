@@ -5,6 +5,7 @@ public class ServerDirector {
 	int cantidadGladiadores;
 	int cantidadTorretas;
 	int generacion;
+	List<Gladiador> ListaActualGladiadores;
 	ControladorGladiadores cg = new ControladorGladiadores();
 	ControladorTorretas ct = new ControladorTorretas();
 	
@@ -18,6 +19,7 @@ public class ServerDirector {
 	public String getGeneracionCero() {
 		String generacion0Gladiadores = "";
 		List<Gladiador> genCeroG = cg.primeraGeneracionG();
+		ListaActualGladiadores = genCeroG;
 		for ( int i = 0; i < (genCeroG.length()-2); i++) {
 			generacion0Gladiadores = generacion0Gladiadores + serializarGladiador(genCeroG.getData(i))+ "," ;
 		}
@@ -28,13 +30,13 @@ public class ServerDirector {
 	}
 	
 	public String obtenerNuevaGeneracionGladiadores(String generacionG) {
-		//String nuevaGen = "Prueba1";
-		//return nuevaGen;
-		return "Nueva Generacion Gladiadores";
+		List<Gladiador> l1 = deserializarG(generacionG);
+		List<Gladiador> nuevaL = cg.algoritmoGenetico(l1);
+		String nueva = serializarListaG(nuevaL);
+		return nueva;
 	}
 	
 	public String obtenerNuevaGeneracionTorretas(String generacionT) {
-		
 		return "Nueva Generacion Torretas";
 	}
 	
@@ -43,7 +45,7 @@ public class ServerDirector {
 	}
 	
 	public String getestadoGladiadores() {
-		return "Estado Gladiadores";
+		return cg.FitnessString(ListaActualGladiadores);
 	}
 
 	
@@ -68,7 +70,21 @@ public class ServerDirector {
 			"\"alcance\": " + Integer.toString(tor.alcance) + "}";		
 		return string;
 	}
-	
+	public String serializarListaG(List<Gladiador> list) {
+		String generacion0Gladiadores = "";
+		List<Gladiador> genCeroG = list;
+		for ( int i = 0; i < (genCeroG.length()-2); i++) {
+			generacion0Gladiadores = generacion0Gladiadores + serializarGladiador(genCeroG.getData(i))+ "," ;
+		}
+		generacion0Gladiadores = generacion0Gladiadores + serializarGladiador(genCeroG.getData(genCeroG.length()-1));		
+		return generacion0Gladiadores;
+	}
+	public List<Gladiador> deserializarG(String s){
+		List<Gladiador> n = new List<Gladiador>();
+		
+		
+		return n;
+	}
 	
 	// SETTERS y GETTERS
 	
