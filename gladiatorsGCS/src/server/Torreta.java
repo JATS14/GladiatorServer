@@ -1,20 +1,32 @@
 package server;
 
 public class Torreta {
-	String tipo;
-    int ataque;
+	String nombre;
+    int generaciones;
+    int danoInferior;
+    int danoSuperior;
+    int potencia;
+    int tipobala;
+    int fuerzalanzador;
+    int velocidadlanzador;
+    int altotorre;
+    int dano;
     int alcance;
-
-    public Torreta(String tipo, int ataque, int alcance) {
-    	this.tipo = tipo;
-    	this.ataque = ataque;
-    	this.alcance = alcance;
-    }
-    public void aumentarAtaque(int actual){
-        ataque = actual+7;
-    }
-
-    public void aumentarAlcance(int actual){
-        alcance = actual+2;
+    int fitness;
+    
+    public Torreta(String nombre, int generaciones, int danoInferior, 
+    		       int danoSuperior, int potencia, int tipobala, 
+    		       int fuerzalanzador, int velocidadlanzador, int altotorre) {
+    	this.nombre = nombre;
+    	this.generaciones = generaciones;
+    	this.danoInferior = danoInferior;
+    	this.danoSuperior = danoSuperior;
+    	this.potencia = potencia;
+    	this.tipobala = tipobala;
+    	this.fuerzalanzador = fuerzalanzador;
+    	this.velocidadlanzador = velocidadlanzador;
+    	this.altotorre = altotorre;
+    	this.dano = (generaciones+danoInferior+danoSuperior+potencia+tipobala-altotorre)/4;
+    	this.alcance = (fuerzalanzador+velocidadlanzador+altotorre-tipobala)/2;
     }
 }

@@ -85,6 +85,9 @@ public class List<T> {
 	 * Indica la cantidad de elementos que tiene la lista
 	 */
 	public int length() {
+		if(first == null) {
+			return 0;
+		}
 		Nodo<T> temp = first;
 		int i = 1;
 		while(temp.next != null) {

@@ -13,14 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 public class GladiatorServerTorretas extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public final ServerDirector serverDirector = new ServerDirector();
+	List<Torreta> ListaActualTorretas = new List<Torreta>();
 	
 	 public GladiatorServerTorretas() {
 	        super();
 	    }
 	
 	 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		 if(ListaActualTorretas.length() == 0) {
+			 response.getWriter().println("Su respuesta se esta Procesando");
+		 }else {
 			String respuesta = serverDirector.getstadoTorretas();
 			response.getWriter().println(respuesta);
+		 }
 		}
 	 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 BufferedReader a = request.getReader();
@@ -31,6 +36,7 @@ public class GladiatorServerTorretas extends HttpServlet {
 				r = r + accion[i];
 			}
 			String respT = serverDirector.obtenerNuevaGeneracionTorretas(r);
+			ListaActualTorretas = serverDirector.ListaActualTorreta;
 			response.getWriter().println(respT);
 	 }
 	

@@ -10,6 +10,7 @@ public class Gladiador {
 	    int condFisica;
 	    int fuerzaSuperior;
 	    int fuerzaInferior;
+	    int resistencia;
 	    int x,y;
 	    int fitness = 0;
 	    
@@ -25,6 +26,7 @@ public class Gladiador {
 	    	this.condFisica = condFisica;
 	    	this.fuerzaSuperior = fuerzaSuperior;
 	    	this.fuerzaInferior = fuerzaInferior;
+	    	this.resistencia = (probSupervivencia+generaciones+inteligenciaEmocional+condFisica+fuerzaSuperior+fuerzaInferior)/6;
 	    	this.x = x;
 	    	this.y = y;
 	    	

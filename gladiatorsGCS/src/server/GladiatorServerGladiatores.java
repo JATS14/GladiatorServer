@@ -13,15 +13,20 @@ import javax.servlet.http.HttpServletResponse;
 public class GladiatorServerGladiatores extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public final ServerDirector serverDirector = new ServerDirector();
+	List<Gladiador> ListaActualGladiadores = new List<Gladiador>();
+	
 	
 	 public GladiatorServerGladiatores() {
 	        super();
 	    }
 	
 	 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			//response.getWriter().append("Served at: ").append(request.getContextPath());
-			String respuesta = serverDirector.getestadoGladiadores();
+		 if(ListaActualGladiadores.length() == 0) {
+			 response.getWriter().println("Su respuesta se esta Procesando");
+		 }else {
+			String respuesta = serverDirector.getestadoGladiadores(ListaActualGladiadores);
 			response.getWriter().println(respuesta);
+			}
 		}
 	 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 BufferedReader a = request.getReader();
@@ -32,6 +37,9 @@ public class GladiatorServerGladiatores extends HttpServlet {
 				r = r + accion[i];
 			}
 			String respg = serverDirector.obtenerNuevaGeneracionGladiadores(r);
+			ListaActualGladiadores = serverDirector.ListaActualGladiadores;
 			response.getWriter().println(respg);
 	 }
+	 
+
 }
