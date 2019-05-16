@@ -21,23 +21,23 @@ public class GladiatorServerGladiatores extends HttpServlet {
 	    }
 	
 	 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 if(ListaActualGladiadores.length() == 0) {
+		 List<Gladiador> G = DataBase.getLAG();
+		 if(G.length() == 0) {
 			 response.getWriter().println("Su respuesta se esta Procesando");
 		 }else {
-			String respuesta = serverDirector.getestadoGladiadores(ListaActualGladiadores);
+			String respuesta = serverDirector.getestadoGladiadores(G);
 			response.getWriter().println(respuesta);
 			}
 		}
 	 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 BufferedReader a = request.getReader();
 			String entrada = a.readLine();
-			String[] accion = entrada.split(" ");
-			String r = "";
-			for(int i = 1; i < accion.length; i++) {
-				r = r + accion[i];
-			}
-			String respg = serverDirector.obtenerNuevaGeneracionGladiadores(r);
+			String respg = serverDirector.obtenerNuevaGeneracionGladiadores(entrada);
 			ListaActualGladiadores = serverDirector.ListaActualGladiadores;
+			
+			List<Gladiador> Ga = serverDirector.deserializarG(respg);
+			DataBase.changeLAG(Ga);
+			
 			response.getWriter().println(respg);
 	 }
 	 

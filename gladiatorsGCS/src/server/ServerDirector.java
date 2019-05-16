@@ -24,7 +24,7 @@ public class ServerDirector {
 		ListaActualGladiadores = genCeroG;
 		
 		for ( int i = 0; i < (genCeroG.length()-2); i++) {
-			generacion0Gladiadores = generacion0Gladiadores + serializarGladiador(genCeroG.getData(i))+ "," ;
+			generacion0Gladiadores = generacion0Gladiadores + serializarGladiador(genCeroG.getData(i))+ ";" ;
 		}
 		generacion0Gladiadores = generacion0Gladiadores + serializarGladiador(genCeroG.getData(genCeroG.length()-1));
 		//--------------------------------------------------------
@@ -33,7 +33,7 @@ public class ServerDirector {
 		ListaActualTorreta = genCeroT;
 		
 		for ( int i = 0; i < (genCeroG.length()-2); i++) {
-			generacion0Torretas = generacion0Torretas + serializarTorreta(genCeroT.getData(i))+ "," ;
+			generacion0Torretas = generacion0Torretas + serializarTorreta(genCeroT.getData(i))+ ";" ;
 		}
 		generacion0Torretas = generacion0Torretas + serializarTorreta(genCeroT.getData(genCeroT.length()-1));
 		

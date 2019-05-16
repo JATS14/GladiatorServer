@@ -20,23 +20,20 @@ public class GladiatorServerTorretas extends HttpServlet {
 	    }
 	
 	 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 if(ListaActualTorretas.length() == 0) {
+		 List<Torreta> T = DataBase.getLAT();
+		 if(T.length() == 0) {
 			 response.getWriter().println("Su respuesta se esta Procesando");
 		 }else {
-			String respuesta = serverDirector.getstadoTorretas();
+			String respuesta = serverDirector.getstadoTorretas(T);
 			response.getWriter().println(respuesta);
 		 }
 		}
 	 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 BufferedReader a = request.getReader();
 			String entrada = a.readLine();
-			String[] accion = entrada.split(" ");
-			String r = "";
-			for(int i = 1; i < accion.length; i++) {
-				r = r + accion[i];
-			}
-			String respT = serverDirector.obtenerNuevaGeneracionTorretas(r);
-			ListaActualTorretas = serverDirector.ListaActualTorreta;
+			String respT = serverDirector.obtenerNuevaGeneracionTorretas(entrada);
+			List<Torreta> To = serverDirector.deserializarT(respT);
+			DataBase.changeLAT(To);
 			response.getWriter().println(respT);
 	 }
 	

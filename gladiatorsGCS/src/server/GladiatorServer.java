@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 public class GladiatorServer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public final ServerDirector serverDirector = new ServerDirector();
+	public DataBase DB = DataBase.getInstance(); 
        
     public GladiatorServer() {
         super();
@@ -19,6 +20,14 @@ public class GladiatorServer extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		String respuesta = serverDirector.getGeneracionCero();
+		String p = respuesta;
+		String[] gt = p.split("-");
+		String G = gt[0];String T = gt[1];
+		List<Gladiador> LAG = serverDirector.deserializarG(G);
+		DataBase.changeLAG(LAG);
+		List<Torreta> LAT = serverDirector.deserializarT(T);
+		DataBase.changeLAT(LAT);
+		
 		response.getWriter().println(respuesta);
 	}
 }
