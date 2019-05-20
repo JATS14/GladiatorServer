@@ -1,8 +1,8 @@
-
+package server;
 
 import java.io.InputStream;
-
 //Clase que maneja un archivo de tipo sting para Formar JSON Objects
+
 public class FileHandle {
 	
 	public static InputStream inputStreamFromFile(String path) {

@@ -1,6 +1,6 @@
-
-//Funcion que determina las caracteristicas de un objeto Torreta, necesario
-//para el programa.
+package server;
+//Clase con los atributos necesarios para manejar
+//el objeto Torre en el algorimo genetico
 public class Torreta {
 	String nombre;
     int generaciones;

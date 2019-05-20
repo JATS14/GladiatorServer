@@ -33,6 +33,8 @@ public class Main {
 		statsTorres = clienteG.poblacionTorretas();
 		System.out.println(statsTorres);
 		
+		
+		//CheckGenerations i = new CheckGenerations();
 	}
 
 }

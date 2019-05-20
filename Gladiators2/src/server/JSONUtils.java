@@ -1,14 +1,12 @@
-
+package server;
 
 import java.io.InputStream;
 import java.util.Scanner;
 
 import org.json.JSONObject;
-
 //Clase necesaria para poder serializar y deserializar objetios de tipo JSon
 //a objetos utilies para el programa
 public class JSONUtils {
-	
 	//Funcion que obtiene los atributos necesarios de un objeto.
 	public static String getJSONStringFromFile(String path) {
 		Scanner scanner;

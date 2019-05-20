@@ -1,6 +1,6 @@
-
-//Clase que reoresenta los objetios Tipo Gladiador.
-
+package server;
+//Clase con los atributos necesarios para manejar
+//el objeto gladiador en el algorimo genetico
 public class Gladiador {
 	
 	    String name;

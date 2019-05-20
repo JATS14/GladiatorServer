@@ -1,113 +1,91 @@
+package server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+//Clase que controla tanto el servidor Web con el algoritmo Genetico
 
-public class ClienteG {
+public class ServerDirector {
+
+	int cantidadGladiadores;
+	int cantidadTorretas;
+	int generacion;
+	List<Gladiador> ListaActualGladiadores;
+	List<Torreta> ListaActualTorreta;
+	ControladorGladiadores cg = new ControladorGladiadores();
+	ControladorTorretas ct = new ControladorTorretas();
 	
-	//Pide a un url, la fucion get,en este caso, obtiene la generacion de los gladiadores
-	//y la de las torretas en un solo string.
-	public String getPopulations()throws IOException {
-		URL url = new URL("http://localhost:9080/Gladiators2/population");
-		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-		connection.setRequestMethod("GET");
-		InputStreamReader reader = new InputStreamReader((connection.getInputStream()));
-		char[] buffer = new char[1024];
-		int readChars = 0;
-		StringBuilder builder = new StringBuilder();
-		while((readChars = reader.read(buffer))>0) {
-			builder.append(new String(buffer, 0, readChars));
-		}
-		return builder.toString();	
-	}
-	//hace un get a un url indicado, en este caso, pide los stats de los gladiadores
-	public String poblacionGladiadores() throws IOException {
-		URL url = new URL("http://localhost:9080/Gladiators2/population/gladiators");
-		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-		connection.setRequestMethod("GET");
-		InputStreamReader reader = new InputStreamReader((connection.getInputStream()));
-		char[] buffer = new char[1024];
-		int readChars = 0;
-		StringBuilder builder = new StringBuilder();
-		while((readChars = reader.read(buffer))>0) {
-			builder.append(new String(buffer, 0, readChars));
-		}
-		return builder.toString();
-	}
-	//hace un get a un url indicado, en este caso, pide los stats de las Torreatas
-	public String poblacionTorretas() throws IOException {
-		URL url = new URL("http://localhost:9080/Gladiators2/population/towers");
-		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-		connection.setRequestMethod("GET");
-		InputStreamReader reader = new InputStreamReader((connection.getInputStream()));
-		char[] buffer = new char[1024];
-		int readChars = 0;
-		StringBuilder builder = new StringBuilder();
-		while((readChars = reader.read(buffer))>0) {
-			builder.append(new String(buffer, 0, readChars));
-		}
-		return builder.toString();
+	public ServerDirector() {
+		this.cantidadGladiadores = 500;
+		this.cantidadTorretas = 5;
+		this.generacion = 0;
 	}
 	
-	//Funcion que hace un post a un url, este requiere un string de la poblacion
-	//de gladiadores que se quiere someter a un algorimo genetico.
-	public String postPoblacionGladiadoresStats(String poblacion) {
-		try {
-	        URL url = new URL("http://localhost:9080/Gladiators2/population/gladiators");
-	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-	        conn.setDoOutput(true);
-	        conn.setRequestMethod("POST");
-	        conn.setRequestProperty("Content-Type", "application/json");
-	        //String input = ListSerializer.toJsonString(json);
-	        OutputStream os = conn.getOutputStream();
-	        os.write(poblacion.getBytes());
-	        os.flush();
-	        BufferedReader br = new BufferedReader(new InputStreamReader(
-	                (conn.getInputStream())));
-	        String output = br.readLine();
-	        conn.disconnect();
-	        return output;
-	        
-	    } catch (MalformedURLException e) {
-	    	System.out.println("Error de URL malformado");
-	    	
-	    } catch (IOException e) {
-	    	System.out.println("Error de IO");
-	    }
-	 return null;
+	//Funcion que retorna una generacion aleatoria de Torretas y de gladiadores en formato
+	//Json y separados por un '-'
+	public String getGeneracionCero() {
+		String generacion0Gladiadores = "";
+		List<Gladiador> genCeroG = cg.primeraGeneracionG();
+		ListaActualGladiadores = genCeroG;
+		for ( int i = 0; i < (genCeroG.length()-1); i++) {
+			generacion0Gladiadores = generacion0Gladiadores + serializarGladiador(genCeroG.getData(i))+ ";" ;
+		}
+		generacion0Gladiadores = generacion0Gladiadores + serializarGladiador(genCeroG.getData(cg.tamanoPrimeraRonda-1))+ ";";
+		//--------------------------------------------------------
+		String generacion0Torretas = "";
+		List<Torreta> genCeroT = ct.primeraGeneracionT();
+		ListaActualTorreta = genCeroT;
+		
+		for ( int i = 0; i < (genCeroG.length()-1); i++) {
+			generacion0Torretas = generacion0Torretas + serializarTorreta(genCeroT.getData(i))+ ";" ;
+		}
+		generacion0Torretas = generacion0Torretas + serializarTorreta(genCeroT.getData(ct.tamanoPrimeraRonda-1)) + ";";
+		return generacion0Gladiadores + "-" + generacion0Torretas;
 	}
-	//Funcion que hace un post a un url, este requiere un string de la poblacion
-	//de Torretas que se quiere someter a un algorimo genetico.
-	public String postPoblacionTorretasStats(String poblacionT) {
-		try {
-	        URL url = new URL("http://localhost:9080/gladiators2/population/towers");
-	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-	        conn.setDoOutput(true);
-	        conn.setRequestMethod("POST");
-	        conn.setRequestProperty("Content-Type", "application/json");
-	        //String input = ListSerializer.toJsonString(json);
-	        OutputStream os = conn.getOutputStream();
-	        os.write(poblacionT.getBytes());
-	        os.flush();
-	        BufferedReader br = new BufferedReader(new InputStreamReader(
-	                (conn.getInputStream())));
-	        String output = br.readLine();
-	        conn.disconnect();
-	        return output;
-	        
-	    } catch (MalformedURLException e) {
-	    	System.out.println("Error de URL malformado");
-	    	
-	    } catch (IOException e) {
-	    	System.out.println("Error de IO");
-	    }
-	 return null;
+	//Funcion que dada una generacion de gladiadores en formato JSon, llama
+	//a la clase encargada del algorimo genetetio, la lista en modificada
+	//y se retorna nueva mente en formato JSON
+	public String obtenerNuevaGeneracionGladiadores(String generacionG) {
+		List<Gladiador> l1 = deserializarG(generacionG);
+		List<Gladiador> nuevaL = cg.algoritmoGenetico(l1);
+		ListaActualGladiadores = nuevaL;
+		String nueva = serializarListaG(nuevaL);
+		return nueva;
 	}
-	
+	//Funcion que dada una generacion de Torretas en formato JSon, llama
+	//a la clase encargada del algorimo genetetio, la lista en modificada
+	//y se retorna nueva mente en formato JSON
+	public String obtenerNuevaGeneracionTorretas(String generacionT) {
+		List<Torreta> l1 = deserializarT(generacionT);
+		List<Torreta> nuevaL = ct.algoritmoGenetico(l1);
+		ListaActualTorreta = nuevaL;
+		String nueva = serializarListaT(nuevaL);
+		return nueva;
+	}
+	//Funciones que retornan el estado de los gladiadores y torretas
+	//ya sea con una lista ingresasa o con la lista guardad
+	//en la base de datos.
+	public String getstadoTorretas() {
+		return ct.FitnessString(ListaActualTorreta);
+	}
+	public String getstadoTorretas(List<Torreta> lista) {
+		return ct.FitnessString(lista);
+	}
+	public String getstadoTorretasProm() {
+		return ct.FitnessStringProm(ListaActualTorreta);
+	}
+	public String getestadoGladiadores() {
+		return cg.FitnessString(ListaActualGladiadores);
+	}
+	public String getestadoGladiadores(List<Gladiador> Lista) {
+		return cg.FitnessString(Lista);
+	}
+	public String getestadoGladiadoresProm() {
+		return cg.FitnessStringProm(ListaActualGladiadores);
+	}
+	public int getestadoGladiadoresPromEnInt() {
+		return cg.FitnessPromEnInt(ListaActualGladiadores);
+	}
+	public int getstadoTorretasPromEnInt() {
+		return ct.FitnessPromEnInt(ListaActualTorreta);
+	}
 	//Funcion que serializa un objeto gladiador en JSon
 	public String serializarGladiador(Gladiador gla) {
 		String string = 
@@ -147,7 +125,7 @@ public class ClienteG {
 		for ( int i = 0; i < (genCeroG.length()-1); i++) {
 			generacion0Gladiadores = generacion0Gladiadores + serializarGladiador(genCeroG.getData(i))+ ";" ;
 		}
-		generacion0Gladiadores = generacion0Gladiadores + serializarGladiador(genCeroG.getData(genCeroG.length()-1));		
+		generacion0Gladiadores = generacion0Gladiadores + serializarGladiador(genCeroG.getData(genCeroG.length()-1)) + ";";		
 		return generacion0Gladiadores;
 	}
 	//Funcion que toma un string en formato JSON con objetos Gladiador, y lo
@@ -159,7 +137,7 @@ public class ClienteG {
 		int cf = 0;int fs = 0;int fi = 0;int x = 0;int y = 0;
 		String[] accion = s.split(";");
 		int cont = 1;
-		for(int i = 0; i < accion.length; i++) {
+		for(int i = 0; i < (accion.length); i++) {
 			String r = accion[i];
 			String[] gladiador = r.split(",");
 			for(int j = 0; j < gladiador.length;j++ ){
@@ -201,7 +179,7 @@ public class ClienteG {
 		for ( int i = 0; i < (genCeroT.length()-1); i++) {
 			generacion0Torreta = generacion0Torreta + serializarTorreta(genCeroT.getData(i))+ ";" ;
 		}
-		generacion0Torreta = generacion0Torreta + serializarTorreta(genCeroT.getData(genCeroT.length()-1));		
+		generacion0Torreta = generacion0Torreta + serializarTorreta(genCeroT.getData(genCeroT.length()-1)) + ";";		
 		return generacion0Torreta;
 	}
 	//Funcion que toma un String en formato JSON que posee objetos Torreta,
@@ -247,5 +225,7 @@ public class ClienteG {
 		return n;
 	}
 	
-
+	
+	// SETTERS y GETTERS
+	
 }
